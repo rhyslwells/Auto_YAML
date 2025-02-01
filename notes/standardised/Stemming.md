@@ -1,1 +1,0 @@
-Shorting words to the key term.

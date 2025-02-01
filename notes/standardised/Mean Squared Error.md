@@ -1,2 +1,0 @@
-==Measures numerical proximity.==
-
