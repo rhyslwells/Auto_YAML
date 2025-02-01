@@ -8,7 +8,6 @@ __pycache__/
 *.pyd
 
 # Ignore logs
-logs/
 *.log
 process_log.txt
 new_tags_log.txt
