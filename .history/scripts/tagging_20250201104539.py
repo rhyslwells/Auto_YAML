@@ -1,6 +1,5 @@
 import openai
 import yaml
-import os
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 

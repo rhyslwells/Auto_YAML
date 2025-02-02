@@ -34,16 +34,16 @@ def test_write_updated_file(tmp_path):
     body = "Test note content."
     
     write_updated_file(file_path, metadata, body)
-    
+
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
-    
-    expected_content = """---
-tags:
-- ML
-category: Data Science
----
 
-Test note content."""
+    expected_content = """---
+    tags:
+    - ML
+    category: Data Science
+    ---
+
+    Test note content."""
     
     assert content.strip() == expected_content.strip()  # Strip to avoid whitespace issues

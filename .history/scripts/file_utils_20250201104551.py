@@ -15,8 +15,7 @@ def extract_yaml_header(content):
 
 def write_updated_file(file_path, metadata, body):
     """Write the updated YAML frontmatter and content to the file."""
-    new_yaml_header = yaml.dump(metadata, default_flow_style=False, sort_keys=False).strip()
+    new_yaml_header = yaml.dump(metadata, default_flow_style=False).strip()
     new_content = f"---\n{new_yaml_header}\n---\n\n{body}"
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(new_content)
-
