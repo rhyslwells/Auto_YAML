@@ -1,0 +1,14 @@
+# Requirments
+pip freeze > requirements.txt
+
+# running tests:
+pytest tests/
+
+# Creating .gitignore and editing 
+```bash
+touch .gitignore
+nano .gitignore  # or use any text editor
+```
+
+# Test cases
+Look at test_notes and compare the predicited YAML headers against ones that i have generated in the past.
