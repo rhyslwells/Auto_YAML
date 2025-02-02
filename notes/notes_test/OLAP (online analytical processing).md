@@ -1,12 +1,3 @@
----
-title: What is OLAP (Online Analytical Processing)?
-tags:
-  - database
-  - data_cleaning
-aliases:
-  - OLAP
-category:
----
 
 It refers to a category of ==database processing== that enables users to interactively analyze large amounts of data from multiple perspectives. 
 

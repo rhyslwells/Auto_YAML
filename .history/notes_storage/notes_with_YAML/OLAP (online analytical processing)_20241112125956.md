@@ -7,7 +7,6 @@ aliases:
   - OLAP
 category:
 ---
-
 It refers to a category of ==database processing== that enables users to interactively analyze large amounts of data from multiple perspectives. 
 
 OLAP systems are designed to handle complex queries and support multidimensional analysis, making it easier to explore, summarize, and analyze data for decision-making and reporting purposes.
