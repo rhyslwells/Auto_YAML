@@ -1,7 +1,7 @@
 import openai
 import yaml
 import os
-from scripts.file_utils import extract_yaml_header
+from file_utils import extract_yaml_header
 
 
 openai.api_key = os.getenv("OPENAI_API_KEY")

@@ -1,7 +1,6 @@
 import pytest
 from scripts.tagging import extract_reference_tags, identify_new_tags, generate_tags_and_categories
 import yaml
-from scripts.file_utils import extract_yaml_header
 
 def test_extract_reference_tags():
     reference_content = """---
