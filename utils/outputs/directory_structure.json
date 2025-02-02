@@ -1,0 +1,253 @@
+{
+    "scripts": {
+        "file_utils.py": {
+            "functions": [
+                {
+                    "name": "load_file_content",
+                    "args": [
+                        "file_path"
+                    ],
+                    "docstring": "Load the content of a file.",
+                    "decorators": []
+                },
+                {
+                    "name": "extract_yaml_header",
+                    "args": [
+                        "content"
+                    ],
+                    "docstring": "Extract YAML frontmatter if it exists.",
+                    "decorators": []
+                },
+                {
+                    "name": "write_updated_file",
+                    "args": [
+                        "file_path",
+                        "metadata",
+                        "body"
+                    ],
+                    "docstring": "Write the updated YAML frontmatter and content to the file.",
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [],
+            "variables": [
+                "new_yaml_header",
+                "new_content",
+                "parts"
+            ]
+        },
+        "logging_utils.py": {
+            "functions": [
+                {
+                    "name": "log_action",
+                    "args": [
+                        "log_file",
+                        "action",
+                        "file_path"
+                    ],
+                    "docstring": "Log processed or skipped files.",
+                    "decorators": []
+                },
+                {
+                    "name": "log_new_tags",
+                    "args": [
+                        "file_path",
+                        "new_tags",
+                        "log_file"
+                    ],
+                    "docstring": "Log newly introduced tags that were not in the reference file.",
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [],
+            "variables": []
+        },
+        "process_notes.py": {
+            "functions": [
+                {
+                    "name": "process_file",
+                    "args": [
+                        "file_path",
+                        "reference_content",
+                        "prompt_template",
+                        "reference_tags",
+                        "force_update"
+                    ],
+                    "docstring": "Process an individual Markdown file.",
+                    "decorators": []
+                },
+                {
+                    "name": "process_folder",
+                    "args": [
+                        "folder_path",
+                        "reference_content",
+                        "prompt_template",
+                        "reference_tags",
+                        "force_update"
+                    ],
+                    "docstring": "Iterate through Markdown files in the folder and process them.",
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "file_utils",
+                "tagging",
+                "logging_utils"
+            ],
+            "variables": [
+                "FOLDER_PATH",
+                "REFERENCE_FILE_PATH",
+                "PROMPT_FILE_PATH",
+                "LOG_FILE",
+                "NEW_TAGS_LOG",
+                "parser",
+                "args",
+                "reference_content",
+                "prompt_template",
+                "reference_tags",
+                "content",
+                "metadata",
+                "ai_metadata",
+                "new_tags"
+            ]
+        },
+        "tagging.py": {
+            "functions": [
+                {
+                    "name": "extract_reference_tags",
+                    "args": [
+                        "reference_content"
+                    ],
+                    "docstring": "Extract tags from the reference file.",
+                    "decorators": []
+                },
+                {
+                    "name": "generate_tags_and_categories",
+                    "args": [
+                        "content",
+                        "reference_content",
+                        "prompt_template"
+                    ],
+                    "docstring": "Generate tags and categories using OpenAI based on reference context.",
+                    "decorators": []
+                },
+                {
+                    "name": "identify_new_tags",
+                    "args": [
+                        "generated_tags",
+                        "reference_tags"
+                    ],
+                    "docstring": "Identify new tags that are not present in the reference file.",
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [],
+            "variables": [
+                "prompt",
+                "response"
+            ]
+        }
+    },
+    "tests": {
+        "test_file_utils.py": {
+            "functions": [
+                {
+                    "name": "test_extract_yaml_header",
+                    "args": [],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "test_load_file_content",
+                    "args": [
+                        "tmp_path"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "test_write_updated_file",
+                    "args": [
+                        "tmp_path"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "scripts.file_utils"
+            ],
+            "variables": [
+                "content",
+                "file_path",
+                "content",
+                "file_path",
+                "metadata",
+                "body",
+                "content"
+            ]
+        },
+        "test_logging_utils.py": {
+            "functions": [
+                {
+                    "name": "test_log_action",
+                    "args": [
+                        "tmp_path"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "test_log_new_tags",
+                    "args": [
+                        "tmp_path"
+                    ],
+                    "docstring": null,
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "scripts.logging_utils"
+            ],
+            "variables": [
+                "log_file",
+                "log_file",
+                "content",
+                "content"
+            ]
+        },
+        "test_tagging.py": {
+            "functions": [
+                {
+                    "name": "test_extract_reference_tags",
+                    "args": [],
+                    "docstring": null,
+                    "decorators": []
+                },
+                {
+                    "name": "test_identify_new_tags",
+                    "args": [],
+                    "docstring": null,
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "scripts.tagging"
+            ],
+            "variables": [
+                "reference_content",
+                "ref_tags",
+                "reference_tags",
+                "generated_tags",
+                "new_tags"
+            ]
+        }
+    }
+}

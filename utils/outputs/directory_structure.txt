@@ -1,0 +1,12 @@
+📂 config/
+  📂 archive/
+📂 logs/
+📂 scripts/
+  📄 file_utils.py
+  📄 logging_utils.py
+  📄 process_notes.py
+  📄 tagging.py
+📂 tests/
+  📄 test_file_utils.py
+  📄 test_logging_utils.py
+  📄 test_tagging.py

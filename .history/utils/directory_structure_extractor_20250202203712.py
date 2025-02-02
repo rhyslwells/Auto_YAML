@@ -1,29 +1,3 @@
-"""
-This script scans a project directory, extracts metadata from files, and outputs a structured view of the project’s directory and metadata. 
-It reads the `focus.md` file to determine which files and directories to include in the process. The script processes files listed within the folders specified in 
-`focus.md` and generates both a visual directory structure and metadata for Python and JSON files.### Key Features:
-1. **Focus List**: Reads the `focus.md` file to identify which folders and files to include. Only the contents of the directories listed in the `focus.md` file will be processed.
-   
-2. **Metadata Extraction**:
-   - For Python files (`.py`): Extracts functions, classes, variables, and imports.
-   - For JSON files (`.json`): Extracts the top-level keys of the JSON file.
-
-3. **Recursive Directory Traversal**: The script traverses the directory tree recursively, including all subdirectories inside those listed in the `focus.md` file.
-
-4. **Output**:
-   - A text file (`directory_structure.txt`) that visually represents the project directory structure.
-   - A JSON file (`directory_structure.json`) containing metadata about the files and folders that were processed.
-
-6. **Performance**: The script logs the time taken to process files and raises warnings for files that take longer than expected.
-
-### Usage:
-- Place the script in a project directory.
-- Make sure to include a `focus.md` file in the same directory or adjust the file path to match your project structure.
-- Run the script, and the results will be saved in the `utils/outputs` directory.
-
-### `focus.md` Example:
-"""
-
 import os
 import json
 import ast
@@ -88,9 +62,8 @@ def process_file(file_path, json_structure, tree_list, indent):
     # ✅ Extract Python metadata and store it
     json_structure[directory_key][os.path.basename(file_path)] = extract_python_metadata(file_path)
 
-    # ✅ Add to directory structure output **(Only if not duplicate)**
-    if f"{indent}📄 {os.path.basename(file_path)}" not in tree_list:
-        tree_list.append(f"{indent}📄 {os.path.basename(file_path)}")
+    # ✅ Add to directory structure output
+    tree_list.append(f"{indent}📄 {os.path.basename(file_path)}")
 
 # ✅ Process directories from the focus list
 def process_directory(root_dir, focus_list, json_structure, tree_list, indent=""):
@@ -99,19 +72,14 @@ def process_directory(root_dir, focus_list, json_structure, tree_list, indent=""
         path = os.path.join(root_dir, item)
         relative_path = os.path.relpath(path, directory).replace("\\", "/")
 
-        # 🚫 **Skip `__pycache__` directories**
-        if "__pycache__" in relative_path:
-            logging.info(f"🚫 Skipping: {relative_path} (Cache folder)")
-            continue
-
-        # ✅ Process only if inside a focused directory
+        # ✅ Check if the file or folder is inside a focused directory
         if any(relative_path.startswith(focus) for focus in focus_list):
             logging.info(f"📂 Processing folder: {relative_path}" if os.path.isdir(path) else f"📄 Processing file: {relative_path}")
 
-            # ✅ Add folder to directory structure output **(Only if not duplicate)**
+            # ✅ Add to directory structure output
+            tree_list.append(f"{indent}📂 {item}/" if os.path.isdir(path) else f"{indent}📄 {item}")
+
             if os.path.isdir(path):
-                if f"{indent}📂 {item}/" not in tree_list:
-                    tree_list.append(f"{indent}📂 {item}/")
                 process_directory(path, focus_list, json_structure, tree_list, indent + "  ")
             elif path.endswith(".py"):
                 process_file(path, json_structure, tree_list, indent)
