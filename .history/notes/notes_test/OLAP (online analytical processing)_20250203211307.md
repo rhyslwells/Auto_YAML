@@ -1,17 +1,3 @@
----
-tags:
-- AI
-- Machine Learning
-- Deep Learning
-aliases:
-- ML Model
-- AI Model
-category: Technology
-phase: Model Training
-topic: Neural Networks
-filename: neural_network_model.py
----
-
 It refers to a category of ==database processing== that enables users to interactively analyze large amounts of data from multiple perspectives. 
 
 OLAP systems are designed to handle complex queries and support multidimensional analysis, making it easier to explore, summarize, and analyze data for decision-making and reporting purposes.

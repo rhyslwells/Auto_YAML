@@ -1,5 +1,13 @@
+import sys
+import os
+
+# Ensure the parent directory (Auto_YAML) is in sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import pytest
 from scripts.tagging import extract_reference_tags, identify_new_tags, generate_tags_and_categories
 import yaml
+from scripts.file_utils import extract_yaml_header
 
 def test_extract_reference_tags():
     reference_content = """---

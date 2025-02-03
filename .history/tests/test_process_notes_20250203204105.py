@@ -1,7 +1,7 @@
 # tests/test_process_notes.py
 
 import pytest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from scripts.process_notes import process_file, process_folder
 
 # Mocks for the functions used in process_file
@@ -20,7 +20,7 @@ def mock_dependencies():
         mock_extract_yaml_header.return_value = ("yaml_header", "body")
         
         # Ensure generate_tags_and_categories returns a dict, not a string
-        mock_generate_tags_and_categories.return_value = {"tags": ["AI", "ML"], "categories": ["Technology"]}  # Dictionary return value
+        mock_generate_tags_and_categories.return_value = {"tags": ["AI", "ML"], "categories": ["Technology"]} 
         
         mock_identify_new_tags.return_value = {"AI", "ML"}
         mock_write_updated_file.return_value = None

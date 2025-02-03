@@ -1,3 +1,8 @@
+import sys
+import os
+
+
+import pytest
 from scripts.tagging import extract_reference_tags, identify_new_tags, generate_tags_and_categories
 import yaml
 

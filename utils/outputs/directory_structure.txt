@@ -2,11 +2,17 @@
   📂 archive/
 📂 logs/
 📂 scripts/
+  📂 .pytest_cache/
+    📂 v/
+      📂 cache/
+  📄 __init__.py
   📄 file_utils.py
   📄 logging_utils.py
   📄 process_notes.py
   📄 tagging.py
+  📄 test.py
 📂 tests/
   📄 test_file_utils.py
   📄 test_logging_utils.py
+  📄 test_process_notes.py
   📄 test_tagging.py

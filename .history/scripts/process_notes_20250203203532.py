@@ -1,6 +1,6 @@
 import os
 from scripts.file_utils import load_file_content, extract_yaml_header, write_updated_file
-from scripts.tagging import generate_yaml_header, identify_new_tags
+from scripts.tagging import extract_reference_tags, generate_tags_and_categories, identify_new_tags
 from scripts.logging_utils import log_action, log_new_tags
 
 def process_file(file_path, reference_content, prompt_template, reference_tags, force_update):
@@ -14,7 +14,7 @@ def process_file(file_path, reference_content, prompt_template, reference_tags, 
         return
     
     metadata = yaml_header if yaml_header else {}
-    ai_metadata = generate_yaml_header(body, reference_content, prompt_template)
+    ai_metadata = generate_tags_and_categories(body, reference_content, prompt_template)
     
     new_tags = identify_new_tags(ai_metadata.get("tags", []), reference_tags)
     if new_tags:

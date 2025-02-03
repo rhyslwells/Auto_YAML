@@ -1,7 +1,6 @@
 import pytest
 import os
-from scripts.logging_utils import log_action, log_new_tags
-
+from ..scripts.logging_utils import log_action, log_new_tags
 
 def test_log_action(tmp_path):
     log_file = tmp_path / "log.txt"

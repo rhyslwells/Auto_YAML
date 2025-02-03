@@ -10,7 +10,7 @@ def extract_reference_tags(reference_content):
     ref_metadata, _ = extract_yaml_header(reference_content)
     return set(ref_metadata.get("tags", [])) if ref_metadata else set()
 
-def generate_yaml_header(content, reference_content, prompt_template, use_trial=True):
+def generate_yaml_header(content, reference_content, prompt_template, use_trial=False):
     """Generate YAML header using OpenAI based on reference context, or return a trial header."""
     
     if use_trial:
