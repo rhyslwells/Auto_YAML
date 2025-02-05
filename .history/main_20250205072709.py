@@ -35,7 +35,6 @@ def main():
     parser = argparse.ArgumentParser(description="Process Obsidian notes with AI-generated YAML metadata.")
     parser.add_argument("--opt1", action="store_true", help="Merge existing YAML with AI-generated YAML.")
     parser.add_argument("--opt2", action="store_true", help="Replace existing YAML with AI-generated YAML.")
-    parser.add_argument("--test", action="store_true", help="Run in test mode (bypass OpenAI API).")
     args = parser.parse_args()
 
     if args.opt1 and args.opt2:
@@ -69,9 +68,9 @@ def main():
         print(f"Error: Notes directory not found: {NOTES_DIR}")
         sys.exit(1)
 
+    # Process markdown files
     try:
-        # Process folder with test mode flag
-        process_folder(NOTES_DIR, reference_content, prompt_template, reference_tags, args.opt1, args.opt2, args.test, LOG_FILE, NEW_TAGS_LOG)
+        process_folder(NOTES_DIR, reference_content, prompt_template, reference_tags, args.opt1, args.opt2, LOG_FILE, NEW_TAGS_LOG)
         logging.info("Processing completed successfully.")
         print("Processing completed successfully.")
     except Exception as e:

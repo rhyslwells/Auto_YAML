@@ -16,4 +16,4 @@ def log_new_tags(file_path, new_tags, log_file="new_tags_log.txt"):
     log_file_path = os.path.join(log_file)
     with open(log_file_path, "a", encoding="utf-8") as log:
         # Then write the file name and the tags
-        log.write(f"New Tags in {file_name}: {', '.join(new_tags)}\n\n")
+        log.write(f"{file_name}: {', '.join(new_tags)}\n\n")
