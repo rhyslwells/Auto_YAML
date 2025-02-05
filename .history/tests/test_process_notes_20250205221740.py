@@ -53,6 +53,7 @@ def test_process_file(mock_dependencies):
     mock_dependencies["mock_log_new_tags"].assert_called_once_with("test.md", {"ML"}, "logs/new_tags_log.txt")
 
 
+
 def test_merge_yaml_headers():
     """Test merging YAML headers with different cases."""
 
@@ -121,13 +122,13 @@ def test_merge_yaml_headers():
     empty_existing_yaml = {}
     merged = merge_yaml_headers(empty_existing_yaml, new_yaml)
 
-    # Ensure tags are the same, order doesn't matter
-    assert set(merged["tags"]) == set(new_yaml["tags"])  # Tags from new_yaml
+    # Compare merged result with new YAML and ignore tag order
+    assert set(merged["tags"]) == set(new_yaml["tags"])  # Ensure tags are the same, order doesn't matter
     assert merged["category"] == new_yaml["category"]
     assert merged["phase"] == new_yaml["phase"]
-    # If `topic` is missing in `new_yaml`, it should be handled appropriately (default or existing value)
-    assert merged.get("topic") == new_yaml.get("topic", "Unknown")  # Handle missing "topic" properly
-    assert merged["filename"] == new_yaml.get("filename", "untitled.py")
+    assert merged["topic"] == new_yaml["topic"]
+    assert merged["filename"] == new_yaml["filename"]
+
 
 
 @pytest.mark.parametrize("existing_yaml, new_yaml, expected_result", [

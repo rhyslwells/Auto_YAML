@@ -22,7 +22,6 @@ def extract_reference_tags(reference_content):
     ref_metadata, _ = extract_yaml_header(reference_content)
     return set(ref_metadata.get("tags", [])) if ref_metadata else set()
 
-
 def generate_yaml_header(content, reference_content, prompt_template, test_mode=True):
     """
     Generates a YAML header using OpenAI based on reference context.
@@ -42,24 +41,7 @@ def generate_yaml_header(content, reference_content, prompt_template, test_mode=
             "filename": "neural_network_model.py"
         }
 
-    # Prepare the prompt by replacing placeholders in the template
-    tags = ["AI", "Machine Learning", "Deep Learning"]  # Example tags, replace with your logic
-    category = "Technology"  # Example category, replace with your logic
-    phase = "Model Training"  # Example phase, replace with your logic
-    topic = "Neural Networks"  # Example topic, replace with your logic
-    filename = "neural_network_model.py"  # Example filename, replace with your logic
-
-    prompt = prompt_template.format(
-        reference=reference_content,
-        target_content=content,
-        tag1=tags[0],  # Replace tag1 with the first tag in your list
-        tag2=tags[1],  # Replace tag2 with the second tag
-        tag3=tags[2],  # Replace tag3 with the third tag
-        category=category,
-        phase=phase,
-        topic=topic,
-        filename=filename
-    )
+    prompt = prompt_template.format(reference=reference_content, target_content=content)
 
     try:
         response = openai.ChatCompletion.create(
@@ -93,7 +75,6 @@ def generate_yaml_header(content, reference_content, prompt_template, test_mode=
     except Exception as e:
         print(f"❌ Unexpected Error in `generate_yaml_header`: {e}")
         return {}
-
 
 
 def identify_new_tags(generated_tags, reference_tags):

@@ -6,18 +6,32 @@ from scripts.tagging import generate_yaml_header, identify_new_tags
 from scripts.logging_utils import log_action, log_new_tags
 
 
+import yaml
+
 def merge_yaml_headers(existing_yaml, new_yaml):
     """
     Merge YAML metadata, keeping existing values when AI returns empty ones.
-    
+
     Parameters:
-        - existing_yaml (dict): The original YAML header.
+        - existing_yaml (dict or str): The original YAML header (can be a string).
         - new_yaml (dict): The AI-generated YAML header.
 
     Returns:
         - dict: The merged YAML metadata.
     """
-    merged_yaml = existing_yaml.copy()
+    # If existing_yaml is a string, try to parse it as YAML
+    if isinstance(existing_yaml, str):
+        try:
+            existing_yaml = yaml.safe_load(existing_yaml)  # Parse the string to a dictionary
+        except yaml.YAMLError as e:
+            print(f"Error parsing YAML header: {e}")
+            return {}  # Return an empty dictionary in case of parsing error
+
+    # Ensure that existing_yaml is a dictionary after parsing
+    if not isinstance(existing_yaml, dict):
+        raise TypeError("existing_yaml must be a dictionary or a valid YAML string.")
+
+    merged_yaml = existing_yaml.copy()  # Create a copy of the existing YAML
 
     for key, value in new_yaml.items():
         if not value:  # Ignore empty AI-generated fields
@@ -29,6 +43,7 @@ def merge_yaml_headers(existing_yaml, new_yaml):
             merged_yaml[key] = value  # Overwrite scalar values
 
     return merged_yaml
+
 
 
 def process_file(file_path, reference_content, prompt_template, reference_tags, opt1, opt2, test_mode, log_file, new_tags_log):

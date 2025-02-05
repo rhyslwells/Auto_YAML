@@ -1,10 +1,7 @@
 import os
-import yaml
-import logging
 from scripts.file_utils import load_file_content, extract_yaml_header, write_updated_file
 from scripts.tagging import generate_yaml_header, identify_new_tags
 from scripts.logging_utils import log_action, log_new_tags
-
 
 def merge_yaml_headers(existing_yaml, new_yaml):
     """
@@ -53,16 +50,6 @@ def process_file(file_path, reference_content, prompt_template, reference_tags, 
         return
 
     yaml_header, body = extract_yaml_header(content)
-
-    # If yaml_header is a string, attempt to parse it as YAML
-    if isinstance(yaml_header, str):
-        try:
-            yaml_header = yaml.safe_load(yaml_header) or {}
-        except yaml.YAMLError as e:
-            print(f"Error parsing YAML: {e}")
-            logging.error(f"Error parsing YAML: {e}")
-            return
-
     file_name = os.path.basename(file_path)  # Extract just the file name
 
     # If no YAML header exists and neither option is used, skip the file
@@ -73,20 +60,15 @@ def process_file(file_path, reference_content, prompt_template, reference_tags, 
 # Generate new YAML metadata using AI or trial mode
     ai_metadata = generate_yaml_header(body, reference_content, prompt_template, test_mode)
 
+    # Processing modes
     if yaml_header and opt1:
         merged_metadata = merge_yaml_headers(yaml_header, ai_metadata)
-        print(f"Merging YAML for {file_name}")  # Debugging line
-
-        log_action(log_file, "Merged YAML", file_name)
-
-        
+        log_action(log_file, "Merged YAML", file_name)  # Ensure this line gets hit
     elif yaml_header and opt2:
         merged_metadata = ai_metadata  # Completely replace existing YAML
-        print(f"Replacing YAML for {file_name}")  # Debugging line
         log_action(log_file, "Replaced YAML", file_name)  # Ensure this line gets hit
     else:
         merged_metadata = ai_metadata  # Default case: use AI-generated YAML only
-        print(f"Added YAML for {file_name}")  # Debugging line
         log_action(log_file, "Added YAML", file_name)  # Ensure this line gets hit
 
     # Identify and log new tags

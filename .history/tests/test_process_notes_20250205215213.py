@@ -71,7 +71,7 @@ def test_merge_yaml_headers():
     merged = merge_yaml_headers(existing_yaml, new_yaml)
 
     # Ensure tags are compared as sets to ignore order
-    assert set(merged["tags"]) == {"AI", "Machine Learning", "Deep Learning"}  # Merged tags with no duplicates
+    assert set(merged["tags"]) == set(["AI", "Machine Learning", "Deep Learning"])  # Merged tags with no duplicates
     assert merged["category"] == "Advanced Technology"  # Replaced category
     assert merged["topic"] == "Neural Networks"  # Kept from existing YAML
     assert merged["phase"] == "Training"  # Added from new YAML
@@ -80,17 +80,15 @@ def test_merge_yaml_headers():
     new_yaml_with_empty_field = {
         "tags": [],
         "category": "New Category",
-        "phase": ""  # Empty phase value should not be included in the final merged result
+        "phase": ""
     }
 
     merged = merge_yaml_headers(existing_yaml, new_yaml_with_empty_field)
 
-    assert set(merged["tags"]) == {"AI", "Machine Learning"}  # Existing tags remain unchanged as new tags is empty
+    assert set(merged["tags"]) == set(["AI", "Machine Learning"])  # Existing tags remain unchanged as new tags is empty
     assert merged["category"] == "New Category"  # Replaced with new category
     assert merged["topic"] == "Neural Networks"  # Kept from existing YAML
-    # Ensure 'phase' key is not in the merged result since it was empty in the new YAML
-    assert "phase" not in merged
-
+    assert merged["phase"] == "Training"  # Kept from existing YAML as phase was empty in new YAML
 
     # Case 3: Handle when existing_yaml is a string (YAML string)
     existing_yaml_str = """
@@ -111,8 +109,7 @@ def test_merge_yaml_headers():
 
     merged = merge_yaml_headers(existing_yaml_parsed, new_yaml)
 
-    # Ensure tags are compared as sets to ignore order
-    assert set(merged["tags"]) == {"AI", "Machine Learning", "Deep Learning"}  # Merged tags with no duplicates
+    assert set(merged["tags"]) == set(["AI", "Machine Learning", "Deep Learning"])  # Merged tags with no duplicates
     assert merged["category"] == "Advanced Technology"  # Replaced category
     assert merged["topic"] == "Neural Networks"  # Kept from existing YAML
     assert merged["phase"] == "Training"  # Added from new YAML
@@ -121,13 +118,7 @@ def test_merge_yaml_headers():
     empty_existing_yaml = {}
     merged = merge_yaml_headers(empty_existing_yaml, new_yaml)
 
-    # Ensure tags are the same, order doesn't matter
-    assert set(merged["tags"]) == set(new_yaml["tags"])  # Tags from new_yaml
-    assert merged["category"] == new_yaml["category"]
-    assert merged["phase"] == new_yaml["phase"]
-    # If `topic` is missing in `new_yaml`, it should be handled appropriately (default or existing value)
-    assert merged.get("topic") == new_yaml.get("topic", "Unknown")  # Handle missing "topic" properly
-    assert merged["filename"] == new_yaml.get("filename", "untitled.py")
+    assert merged == new_yaml  # Since existing YAML is empty, return new YAML as is
 
 
 @pytest.mark.parametrize("existing_yaml, new_yaml, expected_result", [

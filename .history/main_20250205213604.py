@@ -30,14 +30,13 @@ logging.basicConfig(
 
 def main():
     """Main entry point to process Obsidian notes."""
-    print("Start of main function")  # Debugging line
-
+    
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Process Obsidian notes with AI-generated YAML metadata.")
     parser.add_argument("--opt1", action="store_true", help="Merge existing YAML with AI-generated YAML.")
     parser.add_argument("--opt2", action="store_true", help="Replace existing YAML with AI-generated YAML.")
     parser.add_argument("--test", action="store_true", help="Run in test mode (bypass OpenAI API).")
-    args = parser.parse_args()
+    c = parser.parse_args()
 
     if args.opt1 and args.opt2:
         print("Error: --opt1 and --opt2 cannot be used together.")
@@ -49,13 +48,11 @@ def main():
         missing_files.append(f"Reference file not found: {REFERENCE_FILE_PATH}")
     if not os.path.exists(PROMPT_FILE_PATH):
         missing_files.append(f"Prompt file not found: {PROMPT_FILE_PATH}")
-
+    
     if missing_files:
         for msg in missing_files:
             print(msg)
         sys.exit(1)
-
-    print("Configuration files are valid.")  # Debugging line
 
     # Load reference content and prompt template
     try:
@@ -67,18 +64,13 @@ def main():
         logging.error(f"Error loading configuration files: {e}")
         sys.exit(1)
 
-    print("Loaded reference content and prompt template.")  # Debugging line
-
     # Verify the notes directory exists
     if not os.path.exists(NOTES_DIR):
         print(f"Error: Notes directory not found: {NOTES_DIR}")
         sys.exit(1)
 
-    print("Notes directory found.")  # Debugging line
-
     try:
-        # Add debug print to see if this is reached
-        print("Calling process_folder...")  # Debugging line
+        # Process folder with test mode flag
         process_folder(NOTES_DIR, reference_content, prompt_template, reference_tags, args.opt1, args.opt2, args.test, LOG_FILE, NEW_TAGS_LOG)
         logging.info("Processing completed successfully.")
         print("Processing completed successfully.")
@@ -86,7 +78,6 @@ def main():
         logging.error(f"An error occurred during processing: {e}")
         print(f"An error occurred during processing: {e}")
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

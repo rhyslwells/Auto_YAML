@@ -1,10 +1,7 @@
 import os
-import yaml
-import logging
 from scripts.file_utils import load_file_content, extract_yaml_header, write_updated_file
 from scripts.tagging import generate_yaml_header, identify_new_tags
 from scripts.logging_utils import log_action, log_new_tags
-
 
 def merge_yaml_headers(existing_yaml, new_yaml):
     """

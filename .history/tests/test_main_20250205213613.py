@@ -19,7 +19,7 @@ def mock_dependencies():
 
         # Mock return values for loading content
         mock_load_file_content.return_value = "mock content"
-        mock_extract_yaml_header.return_value = ({"tags": ["AI", "ML"], "category": "Technology"}, "body")
+        mock_extract_yaml_header.return_value = ("yaml_header", "body")
         mock_generate_yaml_header.return_value = {"tags": ["AI", "ML"]}
         mock_identify_new_tags.return_value = {"AI", "ML"}
         mock_exists.return_value = True  # Simulate that paths exist (reference file, prompt file, etc.)
