@@ -1,6 +1,7 @@
 📂 config/
   📂 archive/
 📂 logs/
+📄 main.py
 📂 scripts/
   📂 .pytest_cache/
     📂 v/
@@ -11,7 +12,6 @@
   📂 logs/
   📄 process_notes.py
   📄 tagging.py
-  📄 test.py
 📂 tests/
   📄 test_file_utils.py
   📄 test_logging_utils.py

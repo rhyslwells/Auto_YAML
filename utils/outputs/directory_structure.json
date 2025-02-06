@@ -1,4 +1,38 @@
 {
+    "": {
+        "main.py": {
+            "functions": [
+                {
+                    "name": "main",
+                    "args": [],
+                    "docstring": "Main entry point to process Obsidian notes.",
+                    "decorators": []
+                }
+            ],
+            "classes": [],
+            "imports": [
+                "scripts.process_notes",
+                "scripts.file_utils",
+                "scripts.tagging"
+            ],
+            "variables": [
+                "BASE_DIR",
+                "CONFIG_DIR",
+                "NOTES_DIR",
+                "LOGS_DIR",
+                "REFERENCE_FILE_PATH",
+                "PROMPT_FILE_PATH",
+                "LOG_FILE",
+                "NEW_TAGS_LOG",
+                "parser",
+                "args",
+                "missing_files",
+                "reference_content",
+                "prompt_template",
+                "reference_tags"
+            ]
+        }
+    },
     "scripts": {
         "__init__.py": {
             "functions": [],
@@ -83,7 +117,7 @@
                         "existing_yaml",
                         "new_yaml"
                     ],
-                    "docstring": "Merge YAML data, keeping existing values when AI returns empty ones.",
+                    "docstring": "Merge YAML metadata using an outer join strategy:\n- Retains all keys from `existing_yaml` (flexible structure).\n- `new_yaml` values overwrite `existing_yaml` values if they are non-empty.\n- Lists are merged while ensuring no duplicates.\n- Missing keys in `new_yaml` retain their values from `existing_yaml`.\n\nParameters:\n    - existing_yaml (dict): The original YAML header.\n    - new_yaml (dict): The AI-generated YAML header.\n\nReturns:\n    - dict: The merged YAML metadata.",
                     "decorators": []
                 },
                 {
@@ -95,10 +129,11 @@
                         "reference_tags",
                         "opt1",
                         "opt2",
+                        "test_mode",
                         "log_file",
                         "new_tags_log"
                     ],
-                    "docstring": "Process an individual Markdown file with different processing modes.",
+                    "docstring": "Process an individual Markdown file with different processing modes.\n\nParameters:\n    - file_path (str): Path to the Markdown file.\n    - reference_content (str): Reference content for generating tags.\n    - prompt_template (str): Template for the AI prompt.\n    - reference_tags (set): Existing tags from the reference content.\n    - opt1 (bool): Merge AI-generated YAML with existing metadata.\n    - opt2 (bool): Replace existing metadata with AI-generated YAML.\n    - test_mode (bool): Use predefined trial metadata instead of OpenAI.\n    - log_file (str): Path to log file.\n    - new_tags_log (str): Path to new tags log file.",
                     "decorators": []
                 },
                 {
@@ -110,10 +145,11 @@
                         "reference_tags",
                         "opt1",
                         "opt2",
+                        "test_mode",
                         "log_file",
                         "new_tags_log"
                     ],
-                    "docstring": "Iterate through Markdown files in the folder and process them.",
+                    "docstring": "Iterate through Markdown files in the folder and process them.\n\nParameters:\n    - folder_path (str): Path to the folder containing Markdown files.\n    - reference_content (str): Reference content for generating tags.\n    - prompt_template (str): Template for the AI prompt.\n    - reference_tags (set): Existing tags from the reference content.\n    - opt1 (bool): Merge AI-generated YAML with existing metadata.\n    - opt2 (bool): Replace existing metadata with AI-generated YAML.\n    - test_mode (bool): Use predefined trial metadata instead of OpenAI.\n    - log_file (str): Path to log file.\n    - new_tags_log (str): Path to new tags log file.",
                     "decorators": []
                 }
             ],
@@ -125,10 +161,13 @@
             ],
             "variables": [
                 "merged_yaml",
-                "content",
+                "file_name",
                 "ai_metadata",
                 "new_tags",
+                "existing_value",
+                "content",
                 "merged_metadata",
+                "yaml_header",
                 "merged_metadata",
                 "merged_metadata"
             ]
@@ -140,7 +179,7 @@
                     "args": [
                         "reference_content"
                     ],
-                    "docstring": "Extracts tags from the reference file.\n\n- Parses the YAML metadata from the reference content.\n- Returns a set of existing tags for comparison.",
+                    "docstring": "Extracts tags from the reference file.\n\n- Parses the YAML metadata from the reference content.\n- Returns a set of existing tags for comparison.\n\nParameters:\n    - reference_content (str): The reference note content containing YAML metadata.\n\nReturns:\n    - set: A set of extracted tags.",
                     "decorators": []
                 },
                 {
@@ -149,9 +188,9 @@
                         "content",
                         "reference_content",
                         "prompt_template",
-                        "use_trial"
+                        "test_mode"
                     ],
-                    "docstring": "Generates a YAML header using OpenAI based on reference context.\n\n- If `use_trial` is True, returns a predefined trial YAML header (for testing/debugging).\n- Otherwise, constructs a prompt and queries OpenAI to generate a YAML header.\n\nParameters:\n    - content (str): The main body of the note.\n    - reference_content (str): The reference document for context.\n    - prompt_template (str): The template for constructing the prompt.\n    - use_trial (bool): Whether to return a trial header instead of calling OpenAI.\n\nReturns:\n    - dict: A dictionary representing the YAML metadata.",
+                    "docstring": "Generates a YAML header using OpenAI based on reference context.\n\n- If `test_mode` is True, returns a predefined trial YAML header (for testing/debugging).\n- Otherwise, constructs a prompt and queries OpenAI to generate a YAML header.",
                     "decorators": []
                 },
                 {
@@ -169,10 +208,16 @@
                 "scripts.file_utils"
             ],
             "variables": [
+                "tags",
+                "category",
+                "phase",
+                "topic",
+                "filename",
                 "prompt",
-                "response"
+                "response",
+                "ai_metadata"
             ]
-        },
+        }
     },
     "tests": {
         "__init__.py": {
@@ -264,7 +309,7 @@
                     "args": [
                         "mock_dependencies"
                     ],
-                    "docstring": null,
+                    "docstring": "Test processing the main function with different modes.",
                     "decorators": []
                 }
             ],
@@ -280,7 +325,7 @@
                 {
                     "name": "mock_dependencies",
                     "args": [],
-                    "docstring": null,
+                    "docstring": "Mock dependencies used in `process_file`.",
                     "decorators": []
                 },
                 {
@@ -288,16 +333,49 @@
                     "args": [
                         "mock_dependencies"
                     ],
-                    "docstring": null,
+                    "docstring": "Test processing a file while ensuring all dependencies are called correctly.",
+                    "decorators": []
+                },
+                {
+                    "name": "test_merge_yaml_headers",
+                    "args": [],
+                    "docstring": "Test merging YAML headers flexibly.",
+                    "decorators": []
+                },
+                {
+                    "name": "test_merge_yaml_headers_parametrized",
+                    "args": [
+                        "existing_yaml",
+                        "new_yaml",
+                        "expected_result"
+                    ],
+                    "docstring": "Test merging YAML headers with parameterized cases.",
                     "decorators": []
                 }
             ],
             "classes": [],
             "imports": [
                 "unittest.mock",
+                "scripts.process_notes",
                 "scripts.process_notes"
             ],
-            "variables": []
+            "variables": [
+                "existing_yaml",
+                "new_yaml",
+                "merged",
+                "new_yaml_with_empty",
+                "merged",
+                "existing_yaml_str",
+                "new_yaml",
+                "existing_yaml_parsed",
+                "merged",
+                "empty_existing_yaml",
+                "merged",
+                "arbitrary_existing_yaml",
+                "arbitrary_new_yaml",
+                "merged",
+                "merged"
+            ]
         },
         "test_tagging.py": {
             "functions": [
@@ -350,7 +428,10 @@
             ],
             "classes": [],
             "imports": [
-                "scripts.tagging"
+                "unittest.mock",
+                "scripts.tagging",
+                "unittest.mock",
+                "your_module"
             ],
             "variables": [
                 "reference_content",

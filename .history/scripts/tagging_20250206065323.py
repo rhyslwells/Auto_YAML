@@ -23,7 +23,7 @@ def extract_reference_tags(reference_content):
     return set(ref_metadata.get("tags", [])) if ref_metadata else set()
 
 
-def generate_yaml_header(content, reference_content, prompt_template, test_mode):
+def generate_yaml_header(content, reference_content, prompt_template, test_mode=False):
     """
     Generates a YAML header using OpenAI based on reference context.
     

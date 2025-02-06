@@ -34,7 +34,7 @@ def mock_dependencies():
 
 def test_main(mock_dependencies):
     """Test processing the main function with different modes."""
-    print("Start of test_main function")
+
     # Test with --opt1 (merge mode)
     with patch("sys.argv", ["main.py", "--opt1"]):  
         # Call the main function

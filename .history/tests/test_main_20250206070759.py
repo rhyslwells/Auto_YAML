@@ -34,7 +34,7 @@ def mock_dependencies():
 
 def test_main(mock_dependencies):
     """Test processing the main function with different modes."""
-    print("Start of test_main function")
+
     # Test with --opt1 (merge mode)
     with patch("sys.argv", ["main.py", "--opt1"]):  
         # Call the main function
@@ -42,10 +42,6 @@ def test_main(mock_dependencies):
 
         # Ensure process_folder was called
         mock_dependencies["mock_process_folder"].assert_called_once()
-
-        # Debugging: Print call args of generate_yaml_header
-        print("generate_yaml_header call args:", mock_dependencies["mock_generate_yaml_header"].call_args_list)
-
 
         # Ensure that generate_yaml_header was called during file processing
         mock_dependencies["mock_generate_yaml_header"].assert_called_once()  # This ensures it was called

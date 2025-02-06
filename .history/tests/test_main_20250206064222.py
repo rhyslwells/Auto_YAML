@@ -1,3 +1,5 @@
+# tests/test_main.py
+
 import pytest
 from unittest.mock import patch, MagicMock
 import os
@@ -8,8 +10,8 @@ def mock_dependencies():
     with patch("main.process_folder") as mock_process_folder, \
          patch("main.load_file_content") as mock_load_file_content, \
          patch("main.extract_reference_tags") as mock_extract_reference_tags, \
-         patch("scripts.tagging.generate_yaml_header") as mock_generate_yaml_header, \
-         patch("scripts.tagging.identify_new_tags") as mock_identify_new_tags, \
+         patch("scripts.process_notes.generate_yaml_header") as mock_generate_yaml_header, \
+         patch("scripts.process_notes.identify_new_tags") as mock_identify_new_tags, \
          patch("os.path.exists") as mock_exists, \
          patch("scripts.logging_utils.log_action") as mock_log_action, \
          patch("scripts.logging_utils.log_new_tags") as mock_log_new_tags:
@@ -34,50 +36,54 @@ def mock_dependencies():
 
 def test_main(mock_dependencies):
     """Test processing the main function with different modes."""
-    print("Start of test_main function")
-    # Test with --opt1 (merge mode)
-    with patch("sys.argv", ["main.py", "--opt1"]):  
+
+    notes_dir = os.path.join("path_to_base_dir", "notes", "notes_test")  # Adjust this path as needed
+
+    # Ensure process_folder is called with --opt1 (merge mode)
+    with patch("sys.argv", ["main.py", "--opt1"]):  # Test with --opt1 argument (merge mode)
         # Call the main function
         main()
 
-        # Ensure process_folder was called
+        # Ensure process_folder was called once
         mock_dependencies["mock_process_folder"].assert_called_once()
 
-        # Debugging: Print call args of generate_yaml_header
-        print("generate_yaml_header call args:", mock_dependencies["mock_generate_yaml_header"].call_args_list)
+        # Debugging: Print log_action call arguments
+        print(mock_dependencies["mock_log_action"].call_args_list)  # Debugging output
 
-
-        # Ensure that generate_yaml_header was called during file processing
-        mock_dependencies["mock_generate_yaml_header"].assert_called_once()  # This ensures it was called
-
-        # Validate logging actions
+        # Check if log actions were called with appropriate log files
+        # Ensure file path includes the absolute path of the file
         mock_dependencies["mock_log_action"].assert_any_call(
-            "..logs/process_log.txt", "Merged YAML", 'test.md'
+            "logs/process_log.txt", "Merged YAML", os.path.join(notes_dir, "test.md")
         )
         mock_dependencies["mock_log_new_tags"].assert_called_once_with(
-            "test.md", {"AI", "ML"}, "logs/new_tags_log.txt"
+            os.path.join(notes_dir, "test.md"), {"AI", "ML"}, "logs/new_tags_log.txt"
         )
 
     # Test with --opt2 (replace mode)
-    with patch("sys.argv", ["main.py", "--opt2"]):  
+    with patch("sys.argv", ["main.py", "--opt2"]):  # Test with --opt2 argument (replace mode)
         # Call the main function
         main()
 
         # Ensure process_folder was called
         mock_dependencies["mock_process_folder"].assert_called_once()
 
-        # Ensure that generate_yaml_header was called during file processing
-        mock_dependencies["mock_generate_yaml_header"].assert_called_once()  # This ensures it was called
+        # Check if log actions were called with appropriate log files
+        mock_dependencies["mock_log_action"].assert_any_call(
+            "logs/process_log.txt", "Replaced YAML", os.path.join(notes_dir, "test.md")
+        )
+        mock_dependencies["mock_log_new_tags"].assert_called_once_with(
+            os.path.join(notes_dir, "test.md"), {"AI", "ML"}, "logs/new_tags_log.txt"
+        )
 
     # Test with --test (test mode)
-    with patch("sys.argv", ["main.py", "--test"]):  
+    with patch("sys.argv", ["main.py", "--test"]):  # Test with --test argument (test mode)
         # Call the main function
         main()
 
         # Ensure process_folder was called
         mock_dependencies["mock_process_folder"].assert_called_once()
 
-        # Ensure the AI generation header is mocked (test mode)
+        # Check if the AI generation header is mocked (test mode)
         mock_dependencies["mock_generate_yaml_header"].assert_called_with(
             "mock body", "reference content", "prompt template", True
         )
