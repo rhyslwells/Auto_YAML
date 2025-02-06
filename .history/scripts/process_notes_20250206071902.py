@@ -105,7 +105,7 @@ def process_file(file_path, reference_content, prompt_template, reference_tags, 
     new_tags = identify_new_tags(merged_metadata.get("tags", []), reference_tags)
     if new_tags:
         log_new_tags(file_name, new_tags, new_tags_log)
-    print("test 3")
+
     # Write updated file
     try:
         write_updated_file(file_path, merged_metadata, body)
